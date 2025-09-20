@@ -1,0 +1,30 @@
+from app import app, db
+from models import Customer, Item, Review
+
+with app.app_context():
+    # Get the first customer
+    customer = Customer.query.first()
+    print("Customer:", customer.name)
+    print("Items:", customer.items)
+    print("Type of items:", type(customer.items))
+    print("Number of items:", len(customer.items))
+    
+    # Test adding a new item through association proxy
+    print("\nTesting association proxy...")
+    new_item = Item(name="Test Item", price=19.99)
+    db.session.add(new_item)
+    db.session.commit()
+    
+    print("Adding new item through association proxy...")
+    customer.items.append(new_item)
+    db.session.commit()
+    
+    print("Items after adding:", customer.items)
+    print("Number of items after adding:", len(customer.items))
+    print("Number of reviews:", len(customer.reviews))
+    
+    # Check if the review was created automatically
+    print("\nReview details:")
+    for review in customer.reviews:
+        print(f"Review ID: {review.id}, Comment: {review.comment}, Item: {review.item.name}")
+
