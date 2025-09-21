@@ -4,7 +4,6 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 
 db = SQLAlchemy()
-
 class Customer(db.Model, SerializerMixin):
     __tablename__ = 'customers'
     
@@ -16,7 +15,7 @@ class Customer(db.Model, SerializerMixin):
     
     # Add association proxy WITH creator function
     items = association_proxy('reviews', 'item',
-                             creator=lambda item_obj: Review(item=item_obj))
+                             creator=lambda item_obj: Review(item=item_obj, comment="New item added"))
     
     # Serialization rules
     serialize_rules = ('-reviews.customer',)
