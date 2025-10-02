@@ -13,9 +13,8 @@ class Customer(db.Model, SerializerMixin):
     # Add relationship to Review
     reviews = db.relationship('Review', back_populates='customer')
     
-    # Add association proxy WITH creator function
-    items = association_proxy('reviews', 'item',
-                             creator=lambda item_obj: Review(item=item_obj, comment="New item added"))
+    # Add association proxy
+    items = association_proxy('reviews', 'item')
     
     # Serialization rules
     serialize_rules = ('-reviews.customer',)
